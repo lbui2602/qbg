@@ -1,6 +1,7 @@
 package com.map.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -8,12 +9,15 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.map.Data
 import com.map.R
 import com.map.UserAdapter
+import com.map.db.DatabaseHelper
+import com.map.db.UserDao
 import com.map.models.User
 
 class SearchActivity : AppCompatActivity() {
@@ -21,16 +25,19 @@ class SearchActivity : AppCompatActivity() {
     lateinit var btnSearch : Button
     lateinit var listView: ListView
     lateinit var list : List<User>
+    lateinit var dbHelper : DatabaseHelper
+    lateinit var userDao :UserDao
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         initView()
+        dbHelper = DatabaseHelper(this)
+        userDao = UserDao(dbHelper)
         btnSearch.setOnClickListener {
             val name = edtSearch.text.toString().trim()
-            list = Data.list.filter {
-                it.fullname.toLowerCase().contains(name.toLowerCase())
-            }
+            list = userDao.getListUserByName(name)
             if(list.isEmpty()){
                 Toast.makeText(this@SearchActivity,"khong tim thay user", Toast.LENGTH_SHORT).show()
             }

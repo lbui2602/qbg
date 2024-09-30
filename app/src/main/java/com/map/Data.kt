@@ -15,20 +15,27 @@ object Data {
     var date =LocalDate.now()
     val gender = listOf("Male", "Female", "Other").random()
     @RequiresApi(Build.VERSION_CODES.O)
-    fun fakeData() : List<User>{
-        list.add(User("quannh","123456","Nguyen Hong Quan","quan@gmail.com",date, gender))
-        list.add(User("luongbd","123456","Bui Duc Luong","luong@gmail.com",date, gender))
-        list.add(User("truongbx","123456","Bui Xuan Truong","truong@gmail.com",date, gender))
-        list.add(User("thunn","123456","Nguyen Ngoc Thu","thu@gmail.com",date, gender))
-        list.add(User("anhnp","123456","Nguyen Phuong Anh","quan@gmail.com",date, gender))
-        list.add(User("tunt","123456","Nguyen Tuan Tu","tu@gmail.com",date, gender))
-        list.add(User("datdt","123456","Dang Tran Dat","dat@gmail.com",date, gender))
-        list.add(User("duongtd","123456","Ta Duc Duong","duong@gmail.com",date, gender))
-        list.add(User("phonglt","123456","Luong The Phong","phong@gmail.com",date, gender))
-        list.add(User("baonq","123456","Nguyen Quoc Bao","bao@gmail.com",date, gender))
-        list.add(User("binhht","123456","Hoang Thanh Binh","binh@gmail.com",date, gender))
+    fun fakeData(): List<User> {
+        val list = mutableListOf<User>()
+
+        val date = LocalDate.of(2000, 1, 1)
+        val gender = "Male"
+
+        list.add(User(1, "quannh", "123456", "Nguyen Hong Quan", "quan@gmail.com", date, gender))
+        list.add(User(2, "luongbd", "123456", "Bui Duc Luong", "luong@gmail.com", date, gender))
+        list.add(User(3, "truongbx", "123456", "Bui Xuan Truong", "truong@gmail.com", date, gender))
+        list.add(User(4, "thunn", "123456", "Nguyen Ngoc Thu", "thu@gmail.com", date, gender))
+        list.add(User(5, "anhnp", "123456", "Nguyen Phuong Anh", "anh@gmail.com", date, gender))
+        list.add(User(6, "tunt", "123456", "Nguyen Tuan Tu", "tu@gmail.com", date, gender))
+        list.add(User(7, "datdt", "123456", "Dang Tran Dat", "dat@gmail.com", date, gender))
+        list.add(User(8, "duongtd", "123456", "Ta Duc Duong", "duong@gmail.com", date, gender))
+        list.add(User(9, "phonglt", "123456", "Luong The Phong", "phong@gmail.com", date, gender))
+        list.add(User(10, "baonq", "123456", "Nguyen Quoc Bao", "bao@gmail.com", date, gender))
+        list.add(User(11, "binhht", "123456", "Hoang Thanh Binh", "binh@gmail.com", date, gender))
+
         return list
     }
+
     fun add(user:User){
         list.add(user)
     }

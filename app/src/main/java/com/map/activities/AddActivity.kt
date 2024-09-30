@@ -20,7 +20,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.map.Data
+import com.map.MyApplication
 import com.map.R
+import com.map.db.UserDao
 import com.map.models.User
 import java.time.LocalDate
 import java.util.Calendar
@@ -36,12 +38,13 @@ class AddActivity : AppCompatActivity() {
     lateinit var edtDob : EditText
     lateinit var date : LocalDate
     lateinit var gender : String
+    lateinit var userDao: UserDao
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
         initView()
-
+        userDao = (application as MyApplication).userDao
         btnAdd.setOnClickListener {
             val username= edtUsername.text.toString().trim()
             val password= edtPassword.text.toString().trim()
@@ -50,7 +53,7 @@ class AddActivity : AppCompatActivity() {
             if(username.equals("") || password.equals("")|| fullname.equals("") || email.equals("")|| date == null || gender==null){
                 Toast.makeText(this@AddActivity,"Dien day du o trong",Toast.LENGTH_SHORT).show()
             }else{
-                Data.add(User(username, password, fullname, email,date,gender))
+                userDao.addUser(User(0,username,password,fullname,email,date,gender))
                 Toast.makeText(this@AddActivity,"Them user thanh cong",Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this@AddActivity,HomeActivity::class.java))
                 Log.d("checkAdd",Data.list.toString())

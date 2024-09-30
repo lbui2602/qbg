@@ -20,7 +20,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.map.Data
+import com.map.MyApplication
 import com.map.R
+import com.map.db.UserDao
 import com.map.models.User
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -40,15 +42,17 @@ class EditActivity : AppCompatActivity() {
     lateinit var edtDob : EditText
     lateinit var date : LocalDate
     lateinit var gender : String
+    lateinit var userDao : UserDao
+    lateinit var user : User
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
         initView()
+        userDao = (application as MyApplication).userDao
         username = intent.getStringExtra("username").toString()
-        val user = Data.list.filter {
-            it.username.equals(username)
-        }.firstOrNull()
+        user = userDao.getUserByUsername(username)!!
+        date = user.dob
         if(user != null){
             resetEditText(user)
         }
@@ -65,7 +69,8 @@ class EditActivity : AppCompatActivity() {
             if(username.equals("") || password.equals("")|| fullname.equals("") || email.equals("")){
                 Toast.makeText(this@EditActivity,"Dien day du o trong", Toast.LENGTH_SHORT).show()
             }else{
-//                Data.update(username,User(username, password, fullname, email))
+                gender = spnGender.selectedItem.toString()
+                userDao.updateUserByUserId(user.id!!,User(user.id,username,password,fullname,email,date,gender))
                 Toast.makeText(this@EditActivity,"Edit user thanh cong", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this@EditActivity,HomeActivity::class.java))
                 Log.d("checkUpdate",Data.list.toString())
@@ -115,7 +120,7 @@ class EditActivity : AppCompatActivity() {
         edtPassword.setText(user.password)
         edtFullname.setText(user.fullname)
         edtEmail.setText(user.email)
-        val position = when(gender){
+        val position = when(user.gender){
             "Male"->0
             "Male"->1
             "Male"->2
